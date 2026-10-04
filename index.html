@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Wedding invitation</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#2b1733">
+
+  <!-- پیش‌نمایش لینک در واتس‌اپ/تلگرام (بعد از انتشار، آدرس‌ها را کامل کنید — راهنما در README.md) -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Sara & Arman">
+  <meta property="og:description" content="You're invited · دعوت به جشن پیوند · Vous êtes invités">
+  <!-- <meta property="og:image" content="https://USERNAME.github.io/REPO/assets/images/preview.jpg"> -->
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@300;400;500&family=Noto+Nastaliq+Urdu:wght@400;500&family=Vazirmatn:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="is-locked">
+
+  <!-- پس‌زمینه‌ی قابل‌تعویض (از config.js) -->
+  <div class="bg" id="bg" aria-hidden="true"></div>
+
+  <!-- انتخاب زبان و کنترل موسیقی -->
+  <div class="lang" id="langSwitch" role="group" aria-label="Language"></div>
+  <button class="music-btn" id="musicBtn" type="button" hidden>
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/>
+      <g class="waves"><path d="M15.5 9.2a4 4 0 0 1 0 5.6"/><path d="M18 6.8a7.5 7.5 0 0 1 0 10.4"/></g>
+      <path class="mute-x" d="M16 9.5l5 5M21 9.5l-5 5"/>
+    </svg>
+  </button>
+
+  <!-- شروع متحرک: گل‌ها شکوفا می‌شوند و پاکت باز می‌شود -->
+  <section class="splash" id="splash">
+    <div class="garden bloom" id="garden"></div>
+    <div class="splash-inner">
+      <p class="splash-names" id="splashNames"></p>
+      <div class="envelope" id="envelope" role="button" tabindex="0">
+        <div class="env-back"></div>
+        <div class="env-letter"><span id="letterNames"></span></div>
+        <div class="env-front-l"></div>
+        <div class="env-front-r"></div>
+        <div class="env-front-b"></div>
+        <div class="env-flap"></div>
+        <div class="env-seal"><span id="sealText"></span></div>
+      </div>
+      <p class="tap-hint" id="tapHint"></p>
+    </div>
+  </section>
+
+  <!-- دعوت‌نامه -->
+  <main class="card" id="card" hidden>
+
+    <header class="hero">
+      <div class="arch">
+        <p class="top-line" id="topLine"></p>
+        <p class="greeting" id="greeting"></p>
+        <div class="ornament" data-flower></div>
+        <h1 class="names" id="names"></h1>
+        <p class="invite" id="invite"></p>
+        <blockquote class="poem" id="poem"></blockquote>
+        <div class="date-block">
+          <p class="date-main" id="dateMain"></p>
+          <p class="date-sub" id="dateSub"></p>
+          <p class="date-time" id="dateTime"></p>
+        </div>
+      </div>
+    </header>
+
+    <div class="paper">
+
+      <section id="countdown" aria-live="off">
+        <h2 id="cdTitle"></h2>
+        <div class="cd-grid" id="cdGrid">
+          <div class="cd-unit"><span class="cd-num" id="cdD">0</span><span class="cd-label" id="cdDL"></span></div>
+          <div class="cd-unit"><span class="cd-num" id="cdH">0</span><span class="cd-label" id="cdHL"></span></div>
+          <div class="cd-unit"><span class="cd-num" id="cdM">0</span><span class="cd-label" id="cdML"></span></div>
+          <div class="cd-unit"><span class="cd-num" id="cdS">0</span><span class="cd-label" id="cdSL"></span></div>
+        </div>
+        <p class="cd-done" id="cdDone" hidden></p>
+      </section>
+
+      <section id="venue">
+        <h2 id="venueTitle"></h2>
+        <p class="venue-name" id="venueName"></p>
+        <p class="venue-addr" id="venueAddr"></p>
+        <div class="map-arch" id="mapBox"></div>
+        <div class="btn-row" id="mapBtns"></div>
+      </section>
+
+      <section id="schedule">
+        <h2 id="scheduleTitle"></h2>
+        <ol class="timeline" id="timeline"></ol>
+      </section>
+
+      <section id="rsvp" class="rsvp">
+        <h2 id="rsvpTitle"></h2>
+        <p id="rsvpText"></p>
+        <div class="btn-row" id="rsvpBtns"></div>
+        <div class="btn-row cal" id="calBtns"></div>
+      </section>
+
+      <footer class="footer">
+        <div class="ornament" data-flower></div>
+        <p id="footerText"></p>
+      </footer>
+    </div>
+    <div class="page-end"></div>
+  </main>
+
+  <!-- پخش‌کننده‌ی یوتیوب (فقط اگر type: "youtube" باشد استفاده می‌شود) -->
+  <div id="ytHost" style="position:fixed;left:0;bottom:0;width:1px;height:1px;opacity:.01;pointer-events:none"></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
