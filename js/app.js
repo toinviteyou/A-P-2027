@@ -133,13 +133,19 @@
     var src = (mobile && b.imageMobile) ? b.imageMobile : b.image;
     bg.style.setProperty("--bg-overlay", b.overlay != null ? b.overlay : 0.2);
     bg.style.setProperty("--bg-pos", b.position || "center");
-    if (!src) { bg.classList.remove("has-image"); return; }
+    document.documentElement.style.setProperty("--panel-alpha", b.panelOpacity != null ? b.panelOpacity : 0.92);
+    if (!src) { bg.style.backgroundImage = ""; bg.classList.remove("has-image"); return; }
     var img = new Image();
     img.onload = function () {
-      bg.style.setProperty("--bg-image", 'url("' + src + '")');
+      // مسیر کامل نسبت به صفحه (نه نسبت به فایل CSS)
+      var abs = new URL(src, document.baseURI).href;
+      bg.style.backgroundImage = 'url("' + abs + '")';
       bg.classList.add("has-image");
     };
-    img.onerror = function () { bg.classList.remove("has-image"); };
+    img.onerror = function () {
+      bg.style.backgroundImage = "";
+      bg.classList.remove("has-image");
+    };
     img.src = src;
   }
 
