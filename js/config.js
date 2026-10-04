@@ -31,8 +31,8 @@ window.WEDDING_CONFIG = {
   background: {
     image: "assets/images/background.jpg",
     imageMobile: "",
-    overlay: 0.2,
-    panelOpacity: 0.8,
+    overlay: 0.5,
+    panelOpacity: 0.5,
     position: "center"
   },
 
