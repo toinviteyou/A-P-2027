@@ -32,7 +32,7 @@ window.WEDDING_CONFIG = {
     image: "assets/images/background.jpg",
     imageMobile: "",
     overlay: 0.5,
-    panelOpacity: 0.4,
+    panelOpacity: 0.6,
     position: "center"
   },
 
