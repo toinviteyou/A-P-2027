@@ -57,7 +57,7 @@
   }
 
   /* ---------- گل و برگ (SVG) ---------- */
-  function flowerSVG(c1, c2, petals) {
+  function flowerSVG(c1, c2, petals, attrs, delay, size) {
     var p = "", i, a, step = 360 / petals;
     for (i = 0; i < petals; i++) {
       a = i * step;
@@ -72,7 +72,10 @@
     p += '<circle class="core" cx="50" cy="50" r="6"/>' +
       '<circle class="dot" cx="47" cy="48" r="1.1"/><circle class="dot" cx="53" cy="49" r="1.1"/>' +
       '<circle class="dot" cx="50" cy="54" r="1.1"/>';
-    return '<svg class="flower" viewBox="0 0 100 100" style="--c1:' + c1 + ';--c2:' + c2 +
+    return '<svg class="flower" viewBox="0 0 100 100"' + (attrs ? " " + attrs : "") +
+      ' style="--c1:' + c1 + ';--c2:' + c2 +
+      (delay != null ? ";--d:" + delay + "s" : "") +
+      (size ? ";--fs:" + size + "px" : "") +
       '" aria-hidden="true">' + p + "</svg>";
   }
   function leafSVG() {
@@ -118,6 +121,140 @@
       });
     });
     host.innerHTML = html;
+  }
+
+  /* ---------- ساقه، برگ و گل دور طاق ----------
+     یک ساقه‌ی پیچ‌خورده دو طرف خط طلایی طاق را می‌گیرد و در بالا به هم می‌رسد.
+     برای خاموش‌کردن: در config.js بنویسید  decoration: { vine: false }  */
+  var vineDrawn = false;
+  var LEAF_COLORS = ["#5f8070", "#6f9480", "#7f9c8a", "#8fb09b"];
+
+  function seeded(seed) {
+    return function () { seed = (seed * 1664525 + 1013904223) % 4294967296; return seed / 4294967296; };
+  }
+
+  function buildVine() {
+    if (CFG.decoration && CFG.decoration.vine === false) return;
+    var arch = $(".arch");
+    if (!arch) return;
+    var old = arch.querySelector(".vine");
+    if (old) old.remove();
+    var W = arch.offsetWidth, H = arch.offsetHeight;
+    if (W < 160 || H < W / 2 + 80) return;
+
+    var M = 34;                         // حاشیه‌ی اضافه دور طاق برای گل‌هایی که بیرون می‌زنند
+    var I = 9;                          // فاصله‌ی خط طلایی از لبه (مثل css)
+    var R = W / 2 - I;
+    var straight = H - I - W / 2;
+    var total = straight + Math.PI * R / 2;
+    var T0 = 0.9, TD = 2.6;             // شروع و مدت رشد (ثانیه)
+    var out = "";
+
+    // نقطه‌ی روی خط (سمت چپ) با مماس و عمود بیرونی؛ m = آینه برای سمت راست
+    function base(s) {
+      if (s <= straight) return { x: I, y: H - I - s, tx: 0, ty: -1, nx: -1, ny: 0 };
+      var a = (s - straight) / R, c = Math.cos(a), n = Math.sin(a);
+      return { x: W / 2 - R * c, y: W / 2 - R * n, tx: n, ty: -c, nx: -c, ny: -n };
+    }
+    function pt(s, m) {
+      var p = base(s);
+      return m ? { x: W - p.x, y: p.y, tx: -p.tx, ty: p.ty, nx: -p.nx, ny: p.ny } : p;
+    }
+    function onStem(s, m, phase, amp) {
+      var p = pt(s, m);
+      var env = Math.max(0, Math.min(1, s / 50, (total - s) / 50));
+      var o = amp * Math.sin(s / 11 + phase) * env;
+      return { x: p.x + p.nx * o, y: p.y + p.ny * o, tx: p.tx, ty: p.ty, nx: p.nx, ny: p.ny };
+    }
+    function stemPath(m, phase, amp) {
+      var d = "", s = 0, p;
+      for (; s < total; s += 3) {
+        p = onStem(s, m, phase, amp);
+        d += (s === 0 ? "M" : "L") + p.x.toFixed(1) + " " + p.y.toFixed(1);
+      }
+      p = onStem(total, m, phase, amp);
+      return d + "L" + p.x.toFixed(1) + " " + p.y.toFixed(1);
+    }
+    function leaf(x, y, ang, k, color, delay) {
+      out += '<g transform="translate(' + x.toFixed(1) + " " + y.toFixed(1) + ") rotate(" + ang.toFixed(0) +
+        ") scale(" + k.toFixed(2) + ')"><g class="vgrow" style="--d:' + delay.toFixed(2) + 's">' +
+        '<path d="M0 0C5 -6 15 -6 23 0C15 6 5 6 0 0Z" fill="' + color + '"/>' +
+        '<path d="M1.5 0L19 0" stroke="rgba(255,255,255,.35)" stroke-width=".9" fill="none"/></g></g>';
+    }
+    function bloom(x, y, size, pal, petals, rot, delay) {
+      out += '<g transform="translate(' + x.toFixed(1) + " " + y.toFixed(1) + ") rotate(" + rot + ')">' +
+        flowerSVG(PALETTES[pal][0], PALETTES[pal][1], petals,
+          'x="' + (-size / 2) + '" y="' + (-size / 2) + '"', delay.toFixed(2), size) + "</g>";
+    }
+
+    var AMP = 5.5;
+    // ۱) ساقه‌ها و برگ‌ها
+    [false, true].forEach(function (m, vi) {
+      var rnd = seeded(7 + vi * 13), phase = vi ? 1.7 : 0, s, i = 0;
+      out += '<path class="vstem" pathLength="1" d="' + stemPath(m, phase, AMP) + '" style="--d:' + T0 + 's"/>';
+      out += '<path class="vstem thin" pathLength="1" d="' + stemPath(m, phase + Math.PI, 3.8) +
+        '" style="--d:' + (T0 + 0.15) + 's"/>';
+      for (s = 24; s < total - 36; s += 21 + rnd() * 6) {
+        var side = (i++ % 2) ? 1 : -1;
+        var p = onStem(s, m, phase, AMP);
+        var phi = (40 + rnd() * 22) * Math.PI / 180;
+        var dx = Math.cos(phi) * p.tx + Math.sin(phi) * side * p.nx;
+        var dy = Math.cos(phi) * p.ty + Math.sin(phi) * side * p.ny;
+        var k = (side > 0 ? 1 : 0.78) * (0.85 + rnd() * 0.4);
+        var dl = T0 + 0.1 + (s / total) * TD;
+        leaf(p.x, p.y, Math.atan2(dy, dx) * 180 / Math.PI, k, LEAF_COLORS[Math.floor(rnd() * LEAF_COLORS.length)], dl);
+        if (rnd() < 0.2) {                       // غنچه‌ی کوچک
+          var bx = p.x - side * p.nx * 9 + p.tx * 4, by = p.y - side * p.ny * 9 + p.ty * 4;
+          out += '<line x1="' + p.x.toFixed(1) + '" y1="' + p.y.toFixed(1) + '" x2="' + bx.toFixed(1) + '" y2="' +
+            by.toFixed(1) + '" stroke="#6f9480" stroke-width="1" class="vfade" style="--d:' + dl.toFixed(2) + 's"/>' +
+            '<circle class="vpop" cx="' + bx.toFixed(1) + '" cy="' + by.toFixed(1) + '" r="2.4" fill="#d68c9f" style="--d:' +
+            (dl + 0.2).toFixed(2) + 's"/>';
+        }
+      }
+    });
+
+    // ۲) گل‌های کوچک روی ساقه
+    [false, true].forEach(function (m, vi) {
+      var phase = vi ? 1.7 : 0;
+      [[0.3, 24, 0], [0.58, 20, 2], [0.82, 26, 3]].forEach(function (f, j) {
+        var s = total * f[0], p = onStem(s, m, phase, AMP);
+        bloom(p.x, p.y, f[1], (f[2] + vi) % PALETTES.length, 8, j * 25 + vi * 12, T0 + 0.25 + f[0] * TD);
+      });
+    });
+
+    // ۳) دسته‌گل‌های گوشه‌ی پایین
+    [false, true].forEach(function (m, vi) {
+      var cx = m ? W - I : I, cy = H - I, dir = m ? -1 : 1;
+      [-150, -110, -70, -30].forEach(function (a, j) {
+        var ang = m ? 180 - a : a;
+        leaf(cx, cy, ang, 1.15 + (j % 2) * 0.15, LEAF_COLORS[(j + vi) % LEAF_COLORS.length], T0 + 0.05 + j * 0.06);
+      });
+      bloom(cx + dir * 22, cy - 5, 26, (1 + vi * 2) % PALETTES.length, 7, 10, T0 + 0.25);
+      bloom(cx, cy - 2, 44, vi ? 3 : 0, 9, vi * 20, T0 + 0.1);
+    });
+
+    // ۴) گل بزرگ بالای طاق
+    [false, true].forEach(function (m, vi) {
+      var p = onStem(total - 40, m, vi ? 1.7 : 0, AMP);
+      bloom(p.x, p.y, 24, vi ? 0 : 2, 8, 15, T0 + TD - 0.1);
+    });
+    [-165, -125, -55, -15].forEach(function (a, j) {
+      leaf(W / 2, I, a, 1.2, LEAF_COLORS[j % LEAF_COLORS.length], T0 + TD - 0.2);
+    });
+    bloom(W / 2, I, 52, 1, 10, 0, T0 + TD);
+
+    var svg = '<svg class="vine bloom' + (vineDrawn ? " settled" : "") + '" width="' + (W + 2 * M) + '" height="' + (H + 2 * M) +
+      '" viewBox="' + (-M) + " " + (-M) + " " + (W + 2 * M) + " " + (H + 2 * M) + '" aria-hidden="true" focusable="false">' + out + "</svg>";
+    arch.insertAdjacentHTML("beforeend", svg);
+    vineDrawn = true;
+  }
+
+  function watchArch() {
+    var arch = $(".arch"), raf = 0;
+    if (!arch) return;
+    function later() { cancelAnimationFrame(raf); raf = requestAnimationFrame(buildVine); }
+    if (window.ResizeObserver) new ResizeObserver(later).observe(arch);
+    else window.addEventListener("resize", later);
   }
 
   function buildOrnaments() {
@@ -499,6 +636,7 @@
     applyBackground();
     buildGarden();
     buildOrnaments();
+    watchArch();
     buildMap();
     render();
     setInterval(tick, 1000);
