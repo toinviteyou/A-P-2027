@@ -125,9 +125,11 @@
 
   /* ---------- ساقه، برگ و گل دور طاق ----------
      یک ساقه‌ی پیچ‌خورده دو طرف خط طلایی طاق را می‌گیرد و در بالا به هم می‌رسد.
+     انیمیشن‌ها با SMIL (داخل خود SVG) ساخته شده‌اند تا در همه‌ی مرورگرها یکسان رفتار کنند.
      برای خاموش‌کردن: در config.js بنویسید  decoration: { vine: false }  */
-  var vineDrawn = false;
+  var vineDrawn = false, vineT0 = 0;
   var LEAF_COLORS = ["#5f8070", "#6f9480", "#7f9c8a", "#8fb09b"];
+  var SPLINE = ' calcMode="spline" keyTimes="0;1" keySplines=".2 .8 .2 1"';
 
   function seeded(seed) {
     return function () { seed = (seed * 1664525 + 1013904223) % 4294967296; return seed / 4294967296; };
@@ -137,17 +139,19 @@
     if (CFG.decoration && CFG.decoration.vine === false) return;
     var arch = $(".arch");
     if (!arch) return;
+    var W = arch.offsetWidth, H = arch.offsetHeight;
+    if (W < 160 || H < W / 2 + 80) return;          // هنوز نمایش داده نشده
     var old = arch.querySelector(".vine");
     if (old) old.remove();
-    var W = arch.offsetWidth, H = arch.offsetHeight;
-    if (W < 160 || H < W / 2 + 80) return;
 
+    var elapsed = vineT0 ? (performance.now() - vineT0) / 1000 : 0;   // چند ثانیه از شروع انیمیشن گذشته
+    var anim = !reduceMotion && elapsed < 5.5;
     var M = 34;                         // حاشیه‌ی اضافه دور طاق برای گل‌هایی که بیرون می‌زنند
     var I = 9;                          // فاصله‌ی خط طلایی از لبه (مثل css)
     var R = W / 2 - I;
     var straight = H - I - W / 2;
     var total = straight + Math.PI * R / 2;
-    var T0 = 0.9, TD = 2.6;             // شروع و مدت رشد (ثانیه)
+    var T0 = 0.6, TD = 2.6;             // شروع و مدت رشد (ثانیه)
     var out = "";
 
     // نقطه‌ی روی خط (سمت چپ) با مماس و عمود بیرونی؛ m = آینه برای سمت راست
@@ -167,33 +171,57 @@
       return { x: p.x + p.nx * o, y: p.y + p.ny * o, tx: p.tx, ty: p.ty, nx: p.nx, ny: p.ny };
     }
     function stemPath(m, phase, amp) {
-      var d = "", s = 0, p;
+      var d = "", len = 0, px = 0, py = 0, s = 0, p;
       for (; s < total; s += 3) {
         p = onStem(s, m, phase, amp);
+        if (s) len += Math.hypot(p.x - px, p.y - py);
         d += (s === 0 ? "M" : "L") + p.x.toFixed(1) + " " + p.y.toFixed(1);
+        px = p.x; py = p.y;
       }
       p = onStem(total, m, phase, amp);
-      return d + "L" + p.x.toFixed(1) + " " + p.y.toFixed(1);
+      len += Math.hypot(p.x - px, p.y - py);
+      return { d: d + "L" + p.x.toFixed(1) + " " + p.y.toFixed(1), len: Math.ceil(len) + 2 };
+    }
+
+    // رشد از صفر تا یک حول مبدأ محلی (0,0) — بدون transform-origin
+    function scaleIn(inner, delay, dur) {
+      if (!anim) return inner;
+      return '<g transform="scale(0)">' + inner +
+        '<animateTransform attributeName="transform" type="scale" from="0" to="1" begin="' + delay.toFixed(2) +
+        's" dur="' + dur + 's" fill="freeze"' + SPLINE + "/></g>";
+    }
+    function stem(m, phase, amp, cls, delay) {
+      var sp = stemPath(m, phase, amp);
+      out += '<path class="vstem' + cls + '" d="' + sp.d + '"' +
+        (anim ? ' stroke-dasharray="' + sp.len + '" stroke-dashoffset="' + sp.len + '"' : "") + ">" +
+        (anim ? '<animate attributeName="stroke-dashoffset" from="' + sp.len + '" to="0" begin="' + delay.toFixed(2) +
+          's" dur="' + TD + 's" fill="freeze"/>' : "") + "</path>";
     }
     function leaf(x, y, ang, k, color, delay) {
       out += '<g transform="translate(' + x.toFixed(1) + " " + y.toFixed(1) + ") rotate(" + ang.toFixed(0) +
-        ") scale(" + k.toFixed(2) + ')"><g class="vgrow" style="--d:' + delay.toFixed(2) + 's">' +
-        '<path d="M0 0C5 -6 15 -6 23 0C15 6 5 6 0 0Z" fill="' + color + '"/>' +
-        '<path d="M1.5 0L19 0" stroke="rgba(255,255,255,.35)" stroke-width=".9" fill="none"/></g></g>';
+        ") scale(" + k.toFixed(2) + ')">' +
+        scaleIn('<path d="M0 0C5 -6 15 -6 23 0C15 6 5 6 0 0Z" fill="' + color + '"/>' +
+          '<path d="M1.5 0L19 0" stroke="rgba(255,255,255,.35)" stroke-width=".9" fill="none"/>', delay, 0.9) + "</g>";
     }
     function bloom(x, y, size, pal, petals, rot, delay) {
+      var half = size / 2;
+      var f = flowerSVG(PALETTES[pal][0], PALETTES[pal][1], petals,
+        'x="' + (-half) + '" y="' + (-half) + '" width="' + size + '" height="' + size + '"');
+      if (anim) {
+        f = '<g transform="rotate(-50)">' + f +
+          '<animateTransform attributeName="transform" type="rotate" from="-50" to="0" begin="' + delay.toFixed(2) +
+          's" dur="1.5s" fill="freeze"' + SPLINE + "/></g>";
+      }
       out += '<g transform="translate(' + x.toFixed(1) + " " + y.toFixed(1) + ") rotate(" + rot + ')">' +
-        flowerSVG(PALETTES[pal][0], PALETTES[pal][1], petals,
-          'x="' + (-size / 2) + '" y="' + (-size / 2) + '"', delay.toFixed(2), size) + "</g>";
+        scaleIn(f, delay, 1.5) + "</g>";
     }
 
     var AMP = 5.5;
     // ۱) ساقه‌ها و برگ‌ها
     [false, true].forEach(function (m, vi) {
       var rnd = seeded(7 + vi * 13), phase = vi ? 1.7 : 0, s, i = 0;
-      out += '<path class="vstem" pathLength="1" d="' + stemPath(m, phase, AMP) + '" style="--d:' + T0 + 's"/>';
-      out += '<path class="vstem thin" pathLength="1" d="' + stemPath(m, phase + Math.PI, 3.8) +
-        '" style="--d:' + (T0 + 0.15) + 's"/>';
+      stem(m, phase, AMP, "", T0);
+      stem(m, phase + Math.PI, 3.8, " thin", T0 + 0.15);
       for (s = 24; s < total - 36; s += 21 + rnd() * 6) {
         var side = (i++ % 2) ? 1 : -1;
         var p = onStem(s, m, phase, AMP);
@@ -205,10 +233,11 @@
         leaf(p.x, p.y, Math.atan2(dy, dx) * 180 / Math.PI, k, LEAF_COLORS[Math.floor(rnd() * LEAF_COLORS.length)], dl);
         if (rnd() < 0.2) {                       // غنچه‌ی کوچک
           var bx = p.x - side * p.nx * 9 + p.tx * 4, by = p.y - side * p.ny * 9 + p.ty * 4;
-          out += '<line x1="' + p.x.toFixed(1) + '" y1="' + p.y.toFixed(1) + '" x2="' + bx.toFixed(1) + '" y2="' +
-            by.toFixed(1) + '" stroke="#6f9480" stroke-width="1" class="vfade" style="--d:' + dl.toFixed(2) + 's"/>' +
-            '<circle class="vpop" cx="' + bx.toFixed(1) + '" cy="' + by.toFixed(1) + '" r="2.4" fill="#d68c9f" style="--d:' +
-            (dl + 0.2).toFixed(2) + 's"/>';
+          out += '<line x1="' + p.x.toFixed(1) + '" y1="' + p.y.toFixed(1) + '" x2="' + bx.toFixed(1) +
+            '" y2="' + by.toFixed(1) + '" stroke="#6f9480" stroke-width="1"' + (anim ? ' opacity="0"' : "") + ">" +
+            (anim ? '<animate attributeName="opacity" from="0" to="1" begin="' + dl.toFixed(2) + 's" dur=".6s" fill="freeze"/>' : "") +
+            '</line><g transform="translate(' + bx.toFixed(1) + " " + by.toFixed(1) + ')">' +
+            scaleIn('<circle r="2.4" fill="#d68c9f"/>', dl + 0.2, 0.7) + "</g>";
         }
       }
     });
@@ -217,7 +246,7 @@
     [false, true].forEach(function (m, vi) {
       var phase = vi ? 1.7 : 0;
       [[0.3, 24, 0], [0.58, 20, 2], [0.82, 26, 3]].forEach(function (f, j) {
-        var s = total * f[0], p = onStem(s, m, phase, AMP);
+        var p = onStem(total * f[0], m, phase, AMP);
         bloom(p.x, p.y, f[1], (f[2] + vi) % PALETTES.length, 8, j * 25 + vi * 12, T0 + 0.25 + f[0] * TD);
       });
     });
@@ -226,8 +255,7 @@
     [false, true].forEach(function (m, vi) {
       var cx = m ? W - I : I, cy = H - I, dir = m ? -1 : 1;
       [-150, -110, -70, -30].forEach(function (a, j) {
-        var ang = m ? 180 - a : a;
-        leaf(cx, cy, ang, 1.15 + (j % 2) * 0.15, LEAF_COLORS[(j + vi) % LEAF_COLORS.length], T0 + 0.05 + j * 0.06);
+        leaf(cx, cy, m ? 180 - a : a, 1.15 + (j % 2) * 0.15, LEAF_COLORS[(j + vi) % LEAF_COLORS.length], T0 + 0.05 + j * 0.06);
       });
       bloom(cx + dir * 22, cy - 5, 26, (1 + vi * 2) % PALETTES.length, 7, 10, T0 + 0.25);
       bloom(cx, cy - 2, 44, vi ? 3 : 0, 9, vi * 20, T0 + 0.1);
@@ -243,18 +271,37 @@
     });
     bloom(W / 2, I, 52, 1, 10, 0, T0 + TD);
 
-    var svg = '<svg class="vine bloom' + (vineDrawn ? " settled" : "") + '" width="' + (W + 2 * M) + '" height="' + (H + 2 * M) +
-      '" viewBox="' + (-M) + " " + (-M) + " " + (W + 2 * M) + " " + (H + 2 * M) + '" aria-hidden="true" focusable="false">' + out + "</svg>";
-    arch.insertAdjacentHTML("beforeend", svg);
+    arch.insertAdjacentHTML("beforeend",
+      '<svg class="vine" width="' + (W + 2 * M) + '" height="' + (H + 2 * M) + '" viewBox="' + (-M) + " " + (-M) + " " +
+      (W + 2 * M) + " " + (H + 2 * M) + '" aria-hidden="true" focusable="false">' + out + "</svg>");
+    var el = arch.querySelector(".vine");
+    if (anim && el && el.setCurrentTime) {
+      try { el.setCurrentTime(elapsed); el.unpauseAnimations(); } catch (e) {}
+    }
+    if (!vineT0) vineT0 = performance.now();
     vineDrawn = true;
   }
 
+  // اولین ساخت بعد از آماده‌شدن فونت‌ها و ثابت‌شدن اندازه‌ی طاق انجام می‌شود
+  // (تا بارگذاری دیرهنگام فونت، جای گل‌های پایین را عوض نکند).
+  // اگر بعد از آن اندازه عوض شد، ساقه‌ها دوباره و با ادامه‌ی همان انیمیشن ساخته می‌شوند.
   function watchArch() {
-    var arch = $(".arch"), raf = 0;
+    var arch = $(".arch"), timer = 0;
     if (!arch) return;
-    function later() { cancelAnimationFrame(raf); raf = requestAnimationFrame(buildVine); }
+    function fontsReady() {
+      var slow = new Promise(function (r) { setTimeout(r, 2500); });
+      return (document.fonts && document.fonts.ready) ? Promise.race([document.fonts.ready, slow]) : Promise.resolve();
+    }
+    function later() {
+      clearTimeout(timer);
+      timer = setTimeout(function () {
+        if (vineDrawn) { buildVine(); return; }
+        fontsReady().then(function () { setTimeout(buildVine, 150); });
+      }, vineDrawn ? 120 : 300);
+    }
     if (window.ResizeObserver) new ResizeObserver(later).observe(arch);
     else window.addEventListener("resize", later);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(later);
   }
 
   function buildOrnaments() {

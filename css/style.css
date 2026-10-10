@@ -254,7 +254,8 @@ html[lang="fa"] .splash-names { line-height: 2; }
   transition: transform 1s ease, opacity .9s ease;
 }
 .splash.leaving .fl, .splash.leaving .lf { transform: scale(1.3); opacity: 0; }
-.flower, .leaf { width: 100%; height: 100%; display: block; overflow: visible; }
+.flower, .leaf { display: block; overflow: visible; }
+.fl .flower, .fl .leaf { width: 100%; height: 100%; }
 .flower .petal {
   fill: var(--c1); stroke: var(--c2); stroke-width: .7;
   transform-box: view-box; transform-origin: 50px 50px;
@@ -453,30 +454,11 @@ html[lang="en"] .footer p, html[lang="fr"] .footer p { font-style: italic; line-
   pointer-events: none; overflow: visible;
   filter: drop-shadow(0 1px 1.5px rgba(43, 23, 51, .22));
 }
-.vine .flower { width: var(--fs); height: var(--fs); }
 .vstem {
   fill: none; stroke: #5f8070; stroke-width: 1.7;
   stroke-linecap: round; stroke-linejoin: round;
-  stroke-dasharray: 1; stroke-dashoffset: 1;
-  animation: vineDraw 2.6s linear both; animation-delay: var(--d, 0s);
 }
 .vstem.thin { stroke: #8fb09b; stroke-width: 1.1; }
-.vgrow {
-  transform-box: fill-box; transform-origin: 0 50%;
-  animation: vineGrow .9s cubic-bezier(.2, .8, .2, 1) both; animation-delay: var(--d, 0s);
-}
-.vpop {
-  transform-box: fill-box; transform-origin: 50% 50%;
-  animation: vineGrow .7s ease-out both; animation-delay: var(--d, 0s);
-}
-.vfade { animation: vineFade .6s ease both; animation-delay: var(--d, 0s); }
-@keyframes vineDraw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
-@keyframes vineGrow { from { transform: scale(0); } to { transform: scale(1); } }
-@keyframes vineFade { from { opacity: 0; } to { opacity: 1; } }
-/* بعد از اولین رسم (مثلاً با عوض‌شدن زبان) بدون انیمیشن نشان بده */
-.vine.settled .vstem { animation: none; stroke-dashoffset: 0; }
-.vine.settled .vgrow, .vine.settled .vpop, .vine.settled .vfade,
-.vine.settled .flower .petal, .vine.settled .flower .core { animation: none; }
 
 /* تزئینات هرگز از لبه‌ی صفحه بیرون نزند (clip: بدون ایجاد اسکرول) */
 .hero { overflow-x: clip; }
