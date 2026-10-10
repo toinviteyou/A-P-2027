@@ -32,8 +32,15 @@ window.WEDDING_CONFIG = {
     image: "assets/images/background.jpg",
     imageMobile: "",
     overlay: 0.5,
+    // شفافیت «کاغذ» روی عکس: ۱ = کاملاً مات، ۰.۷ = عکس بیشتر دیده می‌شود (کمتر از ۰.۶۵ خواندن متن سخت می‌شود)
     panelOpacity: 0.6,
     position: "center"
+  },
+
+  /* ---------- تزئینات ----------
+     vine: ساقه، برگ و گل دور طاق دعوت‌نامه. برای خاموش‌کردن false بگذارید. */
+  decoration: {
+    vine: true
   },
 
   /* ---------- موسیقی ----------
@@ -97,12 +104,10 @@ window.WEDDING_CONFIG = {
       tapHint: "برای باز کردن دعوت‌نامه ضربه بزنید",
       topLine: "",                                   // مثلاً «به نام خدا» — خالی = نمایش داده نمی‌شود
       greeting: "{name} عزیز،",                      // وقتی لینک ?guest=نام داشته باشد
-      invite: "با شادی و عشق، شما را به جشن پیوند ما دعوت می‌کنیم",
+      invite: "",
       poem: [
-        "ای که با تو جهان بهار شد",
-        "دل ز مهرت امیدوار شد",
-        "دست در دست هم نهادیم اینک",
-        "عشق ما تا ابد پایدار شد"
+        "زیباترین تصمیم زندگی‌مان را گرفتیم.",
+        "از شما صمیمانه دعوت می‌کنیم تا جشن مهم زندگی‌مان را کنار هم باشیم."
       ],
       poemBy: "",                                    // نام شاعر (اگر شعر از شاعری دیگر است)
       timeLabel: "ساعت {time}",
@@ -147,12 +152,10 @@ window.WEDDING_CONFIG = {
       tapHint: "Tap to open your invitation",
       topLine: "",
       greeting: "Dear {name},",
-      invite: "With joy and love, we invite you to celebrate our wedding",
+      invite: "",
       poem: [
-        "With you, the world has turned to spring,",
-        "and hope within my heart takes wing;",
-        "now hand in hand we start our way,",
-        "a love that grows with every day."
+        "We have made the most beautiful decision of our lives.",
+        "We warmly invite you to be with us as we celebrate this important day together."
       ],
       poemBy: "",
       timeLabel: "at {time}",
@@ -197,12 +200,10 @@ window.WEDDING_CONFIG = {
       tapHint: "Touchez pour ouvrir l'invitation",
       topLine: "",
       greeting: "Cher·e {name},",
-      invite: "Avec joie et amour, nous vous invitons à célébrer notre mariage",
+      invite: "",
       poem: [
-        "Avec toi, le monde est devenu printemps,",
-        "et mon cœur, d'espoir, chante en même temps ;",
-        "main dans la main, nous commençons ce jour",
-        "un chemin que scelle un éternel amour."
+        "Nous avons pris la plus belle décision de notre vie.",
+        "Nous vous invitons chaleureusement à partager avec nous cette journée si importante."
       ],
       poemBy: "",
       timeLabel: "à {time}",
