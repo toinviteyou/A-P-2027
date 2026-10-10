@@ -30,11 +30,11 @@ window.WEDDING_CONFIG = {
      overlay: تیرگی روی عکس بین ۰ تا ۱ (برای خوانایی بهتر متن). */
   background: {
     image: "assets/images/background.jpg",
-    imageMobile: "",
+    imageMobile: "assets/images/background-mobile.jpg",
     overlay: 0.5,
     // شفافیت «کاغذ» روی عکس: ۱ = کاملاً مات، ۰.۷ = عکس بیشتر دیده می‌شود (کمتر از ۰.۶۵ خواندن متن سخت می‌شود)
     panelOpacity: 0.6,
-    position: "center"
+    position: "center top"
   },
 
   /* ---------- تزئینات ----------
@@ -100,7 +100,7 @@ window.WEDDING_CONFIG = {
     fa: {
       meta: { title: "دعوت به جشن پیوند سارا و آرمان" },
       names: ["سارا", "آرمان"],
-      sealText: "س · آ",
+      sealText: "س و آ",
       tapHint: "برای باز کردن دعوت‌نامه ضربه بزنید",
       topLine: "",                                   // مثلاً «به نام خدا» — خالی = نمایش داده نمی‌شود
       greeting: "{name} عزیز،",                      // وقتی لینک ?guest=نام داشته باشد

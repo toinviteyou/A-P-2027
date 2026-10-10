@@ -3,25 +3,25 @@
    رنگ‌ها و فونت‌ها را می‌توانید از بخش «متغیرها» (همین ابتدای فایل) عوض کنید.
    ===================================================================== */
 
-/* ---------- فونت دلخواه شما (نستعلیق برای فارسی) ----------
-   فایل فونت را با یکی از این نام‌ها در پوشه assets/fonts بگذارید:
-     nastaliq.woff2  (ترجیحاً)  |  nastaliq.woff  |  nastaliq.ttf  |  nastaliq.otf
-   اگر فایلی نبود، به‌طور خودکار از Noto Nastaliq Urdu (گوگل‌فونت) استفاده می‌شود. */
+/* ---------- فونت‌ها ----------
+   نستعلیق (فقط برای متن دعوت‌نامه): assets/fonts/nastaliq.woff2 (و نسخه‌ی nastaliq.ttf به‌عنوان جایگزین).
+   Vazirmatn (برای همه‌ی متن‌های فارسی دیگر): Regular و Bold، لایسنس OFL (فایل Vazirmatn-OFL.txt). */
 @font-face {
   font-family: "UserNastaliq";
   src: url("../assets/fonts/nastaliq.woff2") format("woff2"),
-       url("../assets/fonts/nastaliq.woff") format("woff"),
-       url("../assets/fonts/nastaliq.ttf") format("truetype"),
-       url("../assets/fonts/nastaliq.otf") format("opentype");
+       url("../assets/fonts/nastaliq.ttf") format("truetype");
   font-display: swap;
 }
-/* فونت دلخواه برای انگلیسی/فرانسوی (اختیاری): script.woff2 / .ttf / .otf */
 @font-face {
-  font-family: "UserScript";
-  src: url("../assets/fonts/script.woff2") format("woff2"),
-       url("../assets/fonts/script.woff") format("woff"),
-       url("../assets/fonts/script.ttf") format("truetype"),
-       url("../assets/fonts/script.otf") format("opentype");
+  font-family: "Vazirmatn";
+  src: url("../assets/fonts/Vazirmatn-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Vazirmatn";
+  src: url("../assets/fonts/Vazirmatn-Bold.woff2") format("woff2");
+  font-weight: 700;
   font-display: swap;
 }
 
@@ -42,15 +42,15 @@
   --line-w-thin: 1.5px;                  /* ضخامت خط‌های ریز (زمان‌بندی، دکمه‌ها) */
 
   /* فونت‌ها */
-  --font-fa-display: "UserNastaliq", "Noto Nastaliq Urdu", "IranNastaliq", serif;
-  --font-fa-body: "Vazirmatn", system-ui, sans-serif;
-  --font-latin-display: "UserScript", "Cormorant Garamond", Georgia, serif;
+  --font-fa-poem: "UserNastaliq", "Noto Nastaliq Urdu", serif;   /* فقط متن دعوت‌نامه */
+  --font-fa-body: "Vazirmatn", system-ui, sans-serif;            /* بقیه‌ی متن‌های فارسی */
+  --font-fa-display: var(--font-fa-body);
+  --font-latin-display: "Cormorant Garamond", Georgia, serif;
   --font-latin-body: "Jost", system-ui, sans-serif;
 
   /* اندازه و فاصله‌ی خطوط نستعلیق (بسته به فونت شما ممکن است نیاز به تنظیم باشد) */
   --nastaliq-size: clamp(1.3rem, 5.6vw, 1.8rem);
   --nastaliq-lh: 2.4;
-  --names-lh: 1.9;
 
   --arch-w: min(88vw, 520px);
 }
@@ -61,9 +61,10 @@ html[lang="fa"] {
   --ls: 0;
   --poem-size: var(--nastaliq-size);
   --poem-lh: var(--nastaliq-lh);
-  --names-size: clamp(2.6rem, 12vw, 4.2rem);
-  --names-line: var(--names-lh);
+  --names-size: clamp(2.2rem, 10vw, 3.4rem);
+  --names-line: 1.6;
   --body-lh: 1.9;
+  --body-weight: 400;
   --num-font: var(--font-fa-body);
 }
 html[lang="en"], html[lang="fr"] {
@@ -75,6 +76,7 @@ html[lang="en"], html[lang="fr"] {
   --names-size: clamp(3rem, 14vw, 5rem);
   --names-line: 1.05;
   --body-lh: 1.7;
+  --body-weight: 300;
   --num-font: var(--font-latin-display);
 }
 
@@ -87,7 +89,7 @@ body {
   min-height: 100vh;
   min-height: 100dvh;
   font-family: var(--body);
-  font-weight: 300;
+  font-weight: var(--body-weight, 300);
   font-size: 1.0625rem;
   line-height: var(--body-lh);
   letter-spacing: var(--ls);
@@ -465,3 +467,22 @@ html[lang="en"] .footer p, html[lang="fr"] .footer p { font-style: italic; line-
 
 /* تزئینات هرگز از لبه‌ی صفحه بیرون نزند (clip: بدون ایجاد اسکرول) */
 .hero { overflow-x: clip; }
+
+
+/* =====================================================================
+   فارسی: فقط متن دعوت‌نامه نستعلیق است؛ بقیه Vazirmatn (Regular و Bold)
+   ===================================================================== */
+html[lang="fa"] .poem { font-family: var(--font-fa-poem); font-weight: 400; }
+html[lang="fa"] .splash-names { font-weight: 700; font-size: clamp(1.7rem, 7vw, 2.4rem); line-height: 1.7; }
+html[lang="fa"] .env-letter span { font-weight: 700; font-size: clamp(1.2rem, 5vw, 1.6rem); line-height: 1.6; padding-top: 4%; }
+html[lang="fa"] .env-seal { font-weight: 700; font-size: .8rem; }
+html[lang="fa"] .greeting { font-size: 1.1rem; line-height: 1.8; }
+html[lang="fa"] .names { font-weight: 700; }
+html[lang="fa"] .date-main { font-weight: 700; font-size: 1.25rem; line-height: 1.7; }
+html[lang="fa"] .paper h2 { font-weight: 700; font-size: clamp(1.4rem, 6vw, 1.75rem); line-height: 1.6; }
+html[lang="fa"] .cd-num { font-weight: 400; }
+html[lang="fa"] .cd-done { font-weight: 700; font-size: 1.15rem; line-height: 1.7; }
+html[lang="fa"] .venue-name { font-weight: 700; font-size: 1.2rem; line-height: 1.7; }
+html[lang="fa"] .tl-time { font-weight: 700; font-size: 1.1rem; }
+html[lang="fa"] .tl-title { font-weight: 700; font-size: 1.05rem; line-height: 1.7; }
+html[lang="fa"] .footer p { font-weight: 700; font-size: 1.1rem; line-height: 1.7; }
