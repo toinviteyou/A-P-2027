@@ -479,7 +479,7 @@
     var names = $("#names");
     names.innerHTML = "";
     names.appendChild(el("span", "", c.names[0]));
-    names.appendChild(el("span", "amp", "&"));
+    names.appendChild(el("span", "amp", lang === "fa" ? "و" : "&"));
     names.appendChild(el("span", "", c.names[1]));
     setText("#invite", c.invite);
 
