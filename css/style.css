@@ -36,8 +36,10 @@
   --blush: #f5cfd6;
   --rose: #d68c9f;
   --sage: #7f9c8a;
-  --gold: #c9a45c;
-  --gold-soft: rgba(201, 164, 92, 0.45);
+  --gold: #c6952f;                       /* طلایی پررنگ‌تر برای همه‌ی خط‌ها */
+  --gold-soft: rgba(198, 149, 47, 0.7);
+  --line-w: 2px;                         /* ضخامت خط‌های اصلی (طاق، جداکننده‌ها، قاب‌ها) */
+  --line-w-thin: 1.5px;                  /* ضخامت خط‌های ریز (زمان‌بندی، دکمه‌ها) */
 
   /* فونت‌ها */
   --font-fa-display: "UserNastaliq", "Noto Nastaliq Urdu", "IranNastaliq", serif;
@@ -293,14 +295,15 @@ html[lang="fa"] .splash-names { line-height: 2; }
   width: var(--arch-w);
   padding: clamp(64px, 14vw, 96px) clamp(22px, 7vw, 44px) clamp(40px, 8vw, 56px);
   background: var(--paper);
-  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
   border-radius: 999px 999px 0 0;
   text-align: center;
   box-shadow: 0 30px 60px rgba(43, 23, 51, .28);
 }
 .arch::before {
-  content: ""; position: absolute; inset: 9px;
-  border: 1px solid var(--gold); opacity: .7;
+  content: ""; position: absolute; inset: calc(9px - var(--line-w) / 2);
+  border: var(--line-w) solid var(--gold);
+  box-shadow: 0 0 10px rgba(198, 149, 47, .28);
   border-radius: 999px 999px 0 0; pointer-events: none;
 }
 .card.shown .arch { animation: archIn 1.4s cubic-bezier(.2,.8,.2,1) both; }
@@ -332,7 +335,7 @@ html[lang="fa"] .names .amp { font-size: .6em; }
 
 .poem {
   margin: 30px 0 0; padding: 26px 0 4px;
-  border-top: 1px solid var(--gold-soft);
+  border-top: var(--line-w) solid var(--gold);
   font-family: var(--display); font-size: var(--poem-size); line-height: var(--poem-lh);
   letter-spacing: 0; color: var(--ink);
 }
@@ -353,12 +356,12 @@ html[lang="en"] .date-main, html[lang="fr"] .date-main { font-size: 1.7rem; line
 .paper {
   max-width: 640px; margin: 0 auto;
   background: var(--paper);
-  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
-  box-shadow: 0 0 0 1px var(--gold-soft), 0 30px 70px rgba(43, 23, 51, .22);
+  -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
+  box-shadow: 0 0 0 var(--line-w) var(--gold), 0 30px 70px rgba(43, 23, 51, .22);
   padding: 8px clamp(22px, 7vw, 56px) 36px;
 }
 .paper > section { padding: clamp(40px, 9vw, 64px) 0; text-align: center; }
-.paper > section + section { border-top: 1px solid var(--gold-soft); }
+.paper > section + section { border-top: var(--line-w) solid var(--gold); }
 .paper h2 {
   margin: 0 0 22px; font-family: var(--display); font-weight: 400;
   font-size: clamp(1.7rem, 7vw, 2.3rem); line-height: 1.7; letter-spacing: 0;
@@ -368,7 +371,7 @@ html[lang="en"] .paper h2, html[lang="fr"] .paper h2 { font-style: italic; font-
 /* شمارش معکوس */
 .cd-grid { display: grid; grid-template-columns: repeat(4, 1fr); margin-top: 6px; }
 .cd-unit { padding: 4px 4px; }
-.cd-unit + .cd-unit { border-inline-start: 1px solid var(--gold-soft); }
+.cd-unit + .cd-unit { border-inline-start: var(--line-w-thin) solid var(--gold); }
 .cd-num {
   display: block; font-family: var(--num-font); font-weight: 300;
   font-size: clamp(2rem, 10vw, 3.2rem); line-height: 1.2;
@@ -384,7 +387,7 @@ html[lang="en"] .venue-name, html[lang="fr"] .venue-name { font-size: 1.7rem; li
 .map-arch {
   margin: 26px auto 22px; width: min(100%, 400px); height: 340px;
   border-radius: 999px 999px 0 0; overflow: hidden;
-  border: 1px solid var(--gold); background: #e8dde3;
+  border: var(--line-w) solid var(--gold); background: #e8dde3;
 }
 .map-arch iframe { width: 100%; height: 100%; border: 0; display: block; filter: saturate(.85); }
 
@@ -393,7 +396,7 @@ html[lang="en"] .venue-name, html[lang="fr"] .venue-name { font-size: 1.7rem; li
   font: inherit; font-size: .95rem; letter-spacing: var(--ls);
   display: inline-flex; align-items: center; justify-content: center;
   padding: 10px 20px; min-height: 44px; border-radius: 999px;
-  border: 1px solid var(--gold); background: transparent; color: var(--ink);
+  border: var(--line-w-thin) solid var(--gold); background: transparent; color: var(--ink);
   text-decoration: none; cursor: pointer;
   transition: background .2s, color .2s, border-color .2s;
 }
@@ -408,10 +411,10 @@ html[lang="en"] .venue-name, html[lang="fr"] .venue-name { font-size: 1.7rem; li
   text-align: end; font-family: var(--num-font); font-size: 1.35rem; line-height: 1.6; padding-top: 2px;
   font-variant-numeric: lining-nums tabular-nums; letter-spacing: 0;
 }
-.tl-body { position: relative; padding-bottom: 28px; border-inline-start: 1px solid var(--gold-soft); padding-inline-start: 22px; }
+.tl-body { position: relative; padding-bottom: 28px; border-inline-start: var(--line-w-thin) solid var(--gold); padding-inline-start: 22px; }
 .tl-item:last-child .tl-body { padding-bottom: 0; border-inline-start-color: transparent; }
 .tl-body::before {
-  content: ""; position: absolute; top: .7em; inset-inline-start: -5px;
+  content: ""; position: absolute; top: .7em; inset-inline-start: calc(-4.5px - var(--line-w-thin) / 2);
   width: 9px; height: 9px; border-radius: 50%; background: var(--rose);
   box-shadow: 0 0 0 3px var(--paper);
 }
