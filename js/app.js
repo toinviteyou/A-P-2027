@@ -464,7 +464,7 @@
     document.title = c.meta.title;
     renderLangSwitch();
 
-    var both = c.names[0] + " & " + c.names[1];
+    var both = c.names[0] + (lang === "fa" ? " و " : " & ") + c.names[1];
     $("#splashNames").textContent = both;
     $("#letterNames").textContent = both;
     $("#sealText").textContent = c.sealText;
