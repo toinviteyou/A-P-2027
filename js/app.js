@@ -16,6 +16,8 @@
     fr: { label: "Français", locale: "fr-FR", dir: "ltr" }
   };
 
+  // «و» به‌جای علامت & (شکل تزئینی & در فونت‌های نوشتاری گاهی شبیه «ع» دیده می‌شود)
+  var AND = { fa: "و", en: "and", fr: "et" };
   var guest = (qs.get("guest") || "").trim().slice(0, 60);
   var target = new Date(CFG.date.iso);
   var lang = pickLang();
@@ -464,7 +466,7 @@
     document.title = c.meta.title;
     renderLangSwitch();
 
-    var both = c.names[0] + (lang === "fa" ? " و " : " & ") + c.names[1];
+    var both = c.names[0] + " " + AND[lang] + " " + c.names[1];
     $("#splashNames").textContent = both;
     $("#letterNames").textContent = both;
     $("#sealText").textContent = c.sealText;
@@ -479,7 +481,7 @@
     var names = $("#names");
     names.innerHTML = "";
     names.appendChild(el("span", "", c.names[0]));
-    names.appendChild(el("span", "amp", lang === "fa" ? "و" : "&"));
+    names.appendChild(el("span", "amp", AND[lang]));
     names.appendChild(el("span", "", c.names[1]));
     setText("#invite", c.invite);
 

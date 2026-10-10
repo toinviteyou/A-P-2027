@@ -84,7 +84,7 @@ window.WEDDING_CONFIG = {
       title: { fa: "مراسم عقد", en: "Ceremony", fr: "Cérémonie" },
       desc:  { fa: "ورود مهمانان و خطبه‌ی عقد", en: "Arrival of guests and vows", fr: "Accueil des invités et échange des vœux" } },
     { time: "17:30",
-      title: { fa: "پذیرایی و عکس", en: "Cocktail & photos", fr: "Vin d'honneur et photos" },
+      title: { fa: "پذیرایی و عکس", en: "Cocktail and photos", fr: "Vin d'honneur et photos" },
       desc:  { fa: "شربت، شیرینی و عکس یادگاری", en: "Drinks, bites and family photos", fr: "Boissons, bouchées et photos de famille" } },
     { time: "19:30",
       title: { fa: "شام", en: "Dinner", fr: "Dîner" },
@@ -148,7 +148,7 @@ window.WEDDING_CONFIG = {
     en: {
       meta: { title: "You're invited — Sara & Arman" },
       names: ["Sara", "Arman"],
-      sealText: "S & A",
+      sealText: "S · A",
       tapHint: "Tap to open your invitation",
       topLine: "",
       greeting: "Dear {name},",
@@ -189,14 +189,14 @@ window.WEDDING_CONFIG = {
         eventTitle: "Sara & Arman's wedding",
         eventDesc: "We can't wait to celebrate with you."
       },
-      footer: "With love, Sara & Arman",
+      footer: "With love, Sara and Arman",
       ui: { music: "Music", open: "Open the invitation" }
     },
 
     fr: {
       meta: { title: "Vous êtes invités — Sara & Arman" },
       names: ["Sara", "Arman"],
-      sealText: "S & A",
+      sealText: "S · A",
       tapHint: "Touchez pour ouvrir l'invitation",
       topLine: "",
       greeting: "Cher·e {name},",
@@ -237,7 +237,7 @@ window.WEDDING_CONFIG = {
         eventTitle: "Mariage de Sara & Arman",
         eventDesc: "Nous avons hâte de fêter ça avec vous."
       },
-      footer: "Avec tout notre amour, Sara & Arman",
+      footer: "Avec tout notre amour, Sara et Arman",
       ui: { music: "Musique", open: "Ouvrir l'invitation" }
     }
   }
