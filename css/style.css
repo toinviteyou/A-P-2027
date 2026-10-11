@@ -487,3 +487,11 @@ html[lang="fa"] .tl-time { font-weight: 700; font-size: 1.1rem; }
 html[lang="fa"] .tl-title { font-weight: 700; font-size: 1.05rem; line-height: 1.7; }
 html[lang="fa"] .footer p { font-weight: 700; font-size: 1.1rem; line-height: 1.7; }
 html[lang="fa"] .names .amp { font-family: var(--font-fa-body); font-style: normal; font-weight: 700; font-size: .62em; line-height: 1.5; }
+
+
+/* =====================================================================
+   خوانایی
+   ===================================================================== */
+:root { --muted: #5a4560; }                       /* متن‌های خاکستری کمی پررنگ‌تر */
+.greeting { color: #9c4a64; }                     /* «نام عزیز،» */
+html[lang="fa"] .poem { word-spacing: 0.25em; }   /* فاصله‌ی کلمات نستعلیق */

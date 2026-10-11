@@ -13,11 +13,12 @@ window.WEDDING_CONFIG = {
 
   /* ---------- تاریخ و ساعت ----------
      iso: تاریخ و ساعت شروع، به‌صورت سال-ماه-روزTساعت:دقیقه:ثانیه+اختلاف‌ساعت
-     برای ساعت تابستانی فرانسه +02:00 و برای زمستانی +01:00 است.  ← عوض کنید */
+     ساعت را به وقت محل مراسم بنویسید. ایران: +03:30 (و timeZone: "Asia/Tehran").
+     برای مثال فرانسه: تابستان +02:00 و زمستان +01:00 (و timeZone: "Europe/Paris"). */
   date: {
-    iso: "2027-06-12T16:00:00+02:00",
-    timeZone: "Europe/Paris",
-    durationHours: 7,            // طول مراسم (برای افزودن به تقویم)
+    iso: "2027-01-01T19:00:00+03:30",   // ۱ ژانویه‌ی ۲۰۲۷ (۱۱ دی ۱۴۰۵)، ساعت ۱۹:۰۰ به وقت ایران
+    timeZone: "Asia/Tehran",
+    durationHours: 5,            // طول مراسم (برای افزودن به تقویم): ۱۹:۰۰ تا ۲۴:۰۰
     showSecondaryDate: true,     // در نسخه‌ی فارسی، تاریخ میلادی را هم زیر تاریخ شمسی نشان بده
     // اگر می‌خواهید تاریخ را خودتان بنویسید (به‌جای محاسبه‌ی خودکار)، اینجا بنویسید:
     customText: { fa: "", en: "", fr: "" }
@@ -61,10 +62,11 @@ window.WEDDING_CONFIG = {
      دو عدد بالای منو را کپی کنید.  ← عوض کنید
      اگر کد «Embed» گوگل‌مپ را دارید، فقط آدرس src آن را در embedUrl بگذارید. */
   venue: {
-    lat: 48.8566,
-    lng: 2.3522,
+    lat: 27.396213,              // مختصات Plus Code «9CW9+F8Q» (سرخون، هرمزگان)
+    lng: 56.418359,
     embedUrl: "",
-    googleUrl: ""                // اختیاری: لینک اشتراک‌گذاری گوگل‌مپ
+    // دکمه‌ی «مسیریابی گوگل» مستقیم با همان Plus Code باز می‌شود
+    googleUrl: "https://www.google.com/maps/search/?api=1&query=9CW9%2BF8Q%20Sarkhun%2C%20Hormozgan%20Province%2C%20Iran"
   },
 
   /* ---------- پاسخ به دعوت (RSVP) ----------
@@ -75,23 +77,23 @@ window.WEDDING_CONFIG = {
     whatsapp: "",
     email: "example@example.com",
     formUrl: "",
-    deadline: "2027-05-15"
+    deadline: "2026-12-10"       // ۱۹ آذر ۱۴۰۵ (به میلادی بنویسید؛ در نسخه‌ی فارسی خودکار شمسی می‌شود)
   },
 
-  /* ---------- برنامه‌ی روز ---------- ← عوض کنید */
+  /* ---------- برنامه‌ی شامگاهی ---------- */
   schedule: [
-    { time: "16:00",
-      title: { fa: "مراسم عقد", en: "Ceremony", fr: "Cérémonie" },
-      desc:  { fa: "ورود مهمانان و خطبه‌ی عقد", en: "Arrival of guests and vows", fr: "Accueil des invités et échange des vœux" } },
-    { time: "17:30",
-      title: { fa: "پذیرایی و عکس", en: "Cocktail and photos", fr: "Vin d'honneur et photos" },
-      desc:  { fa: "شربت، شیرینی و عکس یادگاری", en: "Drinks, bites and family photos", fr: "Boissons, bouchées et photos de famille" } },
-    { time: "19:30",
+    { time: "19:00",
+      title: { fa: "شروع", en: "The evening begins", fr: "Le début de la soirée" },
+      desc:  { fa: "ورود مهمانان", en: "Arrival of the guests", fr: "Accueil des invités" } },
+    { time: "20:00",
+      title: { fa: "پذیرایی و احوال‌پرسی", en: "Greetings and refreshments", fr: "Retrouvailles et rafraîchissements" },
+      desc:  { fa: "شربت، چای و شیرینی", en: "Sherbet, tea and sweets", fr: "Sharbat, thé et douceurs" } },
+    { time: "21:00",
       title: { fa: "شام", en: "Dinner", fr: "Dîner" },
-      desc:  { fa: "شام در کنار هم", en: "A long table, together", fr: "Un grand dîner à partager" } },
+      desc:  { fa: "شام در کنار هم", en: "Dinner, all together", fr: "Un dîner tous ensemble" } },
     { time: "22:00",
-      title: { fa: "رقص و شادی", en: "Dancing", fr: "Soirée dansante" },
-      desc:  { fa: "تا هر وقت که پا دارید", en: "As long as your feet allow", fr: "Tant que les jambes suivent" } }
+      title: { fa: "رقص و شادی", en: "Dancing and joy", fr: "Danse et joie" },
+      desc:  { fa: "تا هر وقت که پا دارید", en: "For as long as your feet will carry you", fr: "Tant que vos jambes vous porteront" } }
   ],
 
   /* ---------- متن‌ها به سه زبان ---------- ← همه را عوض کنید */
@@ -106,8 +108,8 @@ window.WEDDING_CONFIG = {
       greeting: "{name} عزیز،",                      // وقتی لینک ?guest=نام داشته باشد
       invite: "",
       poem: [
-        "زیباترین تصمیم زندگی‌مان را گرفتیم.",
-        "از شما صمیمانه دعوت می‌کنیم تا جشن مهم زندگی‌مان را کنار هم باشیم."
+        "زیباترین تصمیم زندگی‌مان را گرفته‌ایم.",
+        "از شما صمیمانه دعوت می‌کنیم تا در جشن مهم زندگی‌مان، کنار هم باشیم."
       ],
       poemBy: "",                                    // نام شاعر (اگر شعر از شاعری دیگر است)
       timeLabel: "ساعت {time}",
@@ -120,12 +122,12 @@ window.WEDDING_CONFIG = {
       venue: {
         title: "محل برگزاری",
         name: "نام سالن یا باغ",
-        address: "خیابان و شماره\nکد پستی، شهر",
+        address: "سرخون، استان هرمزگان\nایران",
         google: "مسیریابی با گوگل‌مپ",
         apple: "اپل مپ",
         waze: "ویز"
       },
-      schedule: { title: "برنامه‌ی روز" },
+      schedule: { title: "برنامه‌ی شامگاهی" },
       rsvp: {
         title: "حضور شما شادی ماست",
         text: "لطفاً تا {deadline} حضورتان را به ما اطلاع دهید.",
@@ -155,7 +157,7 @@ window.WEDDING_CONFIG = {
       invite: "",
       poem: [
         "We have made the most beautiful decision of our lives.",
-        "We warmly invite you to be with us as we celebrate this important day together."
+        "We warmly invite you to be at our side as we celebrate this important day of our lives."
       ],
       poemBy: "",
       timeLabel: "at {time}",
@@ -168,12 +170,12 @@ window.WEDDING_CONFIG = {
       venue: {
         title: "Venue",
         name: "Name of the venue",
-        address: "Street and number\nPostcode, City",
+        address: "Sarkhun, Hormozgan Province\nIran",
         google: "Directions in Google Maps",
         apple: "Apple Maps",
         waze: "Waze"
       },
-      schedule: { title: "Order of the day" },
+      schedule: { title: "Evening programme" },
       rsvp: {
         title: "Your presence is our joy",
         text: "Please let us know by {deadline} if you can join us.",
@@ -203,7 +205,7 @@ window.WEDDING_CONFIG = {
       invite: "",
       poem: [
         "Nous avons pris la plus belle décision de notre vie.",
-        "Nous vous invitons chaleureusement à partager avec nous cette journée si importante."
+        "Nous vous invitons de tout cœur à nous rejoindre pour célébrer, à nos côtés, ce jour important de notre vie."
       ],
       poemBy: "",
       timeLabel: "à {time}",
@@ -216,12 +218,12 @@ window.WEDDING_CONFIG = {
       venue: {
         title: "Lieu",
         name: "Nom du lieu",
-        address: "Rue et numéro\nCode postal, Ville",
+        address: "Sarkhun, province d'Hormozgan\nIran",
         google: "Itinéraire Google Maps",
         apple: "Plans (Apple)",
         waze: "Waze"
       },
-      schedule: { title: "Programme de la journée" },
+      schedule: { title: "Programme de la soirée" },
       rsvp: {
         title: "Votre présence nous comble",
         text: "Merci de nous répondre avant le {deadline}.",
