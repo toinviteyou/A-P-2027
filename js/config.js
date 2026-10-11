@@ -87,7 +87,7 @@ window.WEDDING_CONFIG = {
       desc:  { fa: "ورود مهمانان", en: "Arrival of the guests", fr: "Accueil des invités" } },
     { time: "20:00",
       title: { fa: "پذیرایی و احوال‌پرسی", en: "Greetings and refreshments", fr: "Retrouvailles et rafraîchissements" },
-      desc:  { fa: "شربت، چای و شیرینی", en: "Sherbet, tea and sweets", fr: "Sharbat, thé et douceurs" } },
+      desc:  { fa: "میوه، چای و شیرینی", en: "Tea and sweets", fr: "Thé et douceurs" } },
     { time: "21:00",
       title: { fa: "شام", en: "Dinner", fr: "Dîner" },
       desc:  { fa: "شام در کنار هم", en: "Dinner, all together", fr: "Un dîner tous ensemble" } },
