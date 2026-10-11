@@ -66,7 +66,7 @@ window.WEDDING_CONFIG = {
     lng: 56.418359,
     embedUrl: "",
     // دکمه‌ی «مسیریابی گوگل» مستقیم با همان Plus Code باز می‌شود
-    googleUrl: "https://www.google.com/maps/search/?api=1&query=9CW9%2BF8Q%20Sarkhun%2C%20Hormozgan%20Province%2C%20Iran"
+    googleUrl: "https://maps.app.goo.gl/7eV3JC4qhp4WftKo7"
   },
 
   /* ---------- پاسخ به دعوت (RSVP) ----------
@@ -75,7 +75,7 @@ window.WEDDING_CONFIG = {
      whatsapp: شماره با کد کشور و بدون + و صفر، مثل 33612345678  ← عوض کنید */
   rsvp: {
     whatsapp: "",
-    email: "example@example.com",
+    email: "p.m_3164@yahoo.com",
     formUrl: "",
     deadline: "2026-12-10"       // ۱۹ آذر ۱۴۰۵ (به میلادی بنویسید؛ در نسخه‌ی فارسی خودکار شمسی می‌شود)
   },
@@ -100,9 +100,9 @@ window.WEDDING_CONFIG = {
   content: {
 
     fa: {
-      meta: { title: "دعوت به جشن پیوند سارا و آرمان" },
-      names: ["سارا", "آرمان"],
-      sealText: "س و آ",
+      meta: { title: "دعوت به جشن پیوند پروین و علی" },
+      names: ["پروین", "علی"],
+      sealText: "پ و ع",
       tapHint: "برای باز کردن دعوت‌نامه ضربه بزنید",
       topLine: "",                                   // مثلاً «به نام خدا» — خالی = نمایش داده نمی‌شود
       greeting: "{name} عزیز،",                      // وقتی لینک ?guest=نام داشته باشد
@@ -121,8 +121,8 @@ window.WEDDING_CONFIG = {
       },
       venue: {
         title: "محل برگزاری",
-        name: "نام سالن یا باغ",
-        address: "سرخون، استان هرمزگان\nایران",
+        name: "عمارت اشرافی",
+        address: "اول جاده سرخون- رو به روی تالا زرین و پردیسان، استان هرمزگان\nایران",
         google: "مسیریابی با گوگل‌مپ",
         apple: "اپل مپ",
         waze: "ویز"
@@ -143,14 +143,14 @@ window.WEDDING_CONFIG = {
         eventTitle: "عروسی سارا و آرمان",
         eventDesc: "با شادی منتظر شما هستیم."
       },
-      footer: "با عشق، سارا و آرمان",
+      footer: "با مهر، پروین و علی",
       ui: { music: "موسیقی", open: "باز کردن دعوت‌نامه" }
     },
 
     en: {
-      meta: { title: "You're invited — Sara & Arman" },
-      names: ["Sara", "Arman"],
-      sealText: "S · A",
+      meta: { title: "You're invited — Parvin & Alli" },
+      names: ["Parvin", "Alli"],
+      sealText: "P · A",
       tapHint: "Tap to open your invitation",
       topLine: "",
       greeting: "Dear {name},",
@@ -182,23 +182,23 @@ window.WEDDING_CONFIG = {
         whatsapp: "Message on WhatsApp",
         email: "Send an email",
         form: "Fill in the form",
-        whatsappMsg: "Hello! {guest} will be at Sara & Arman's wedding.",
+        whatsappMsg: "Hello! {guest} will be at Parvin & Alli's wedding.",
         emailSubject: "Wedding RSVP"
       },
       calendar: {
         add: "Add to calendar",
         google: "Google Calendar",
-        eventTitle: "Sara & Arman's wedding",
+        eventTitle: "Parvin & Alli's wedding",
         eventDesc: "We can't wait to celebrate with you."
       },
-      footer: "With love, Sara and Arman",
+      footer: "With love, Parvin and Alli",
       ui: { music: "Music", open: "Open the invitation" }
     },
 
     fr: {
-      meta: { title: "Vous êtes invités — Sara & Arman" },
-      names: ["Sara", "Arman"],
-      sealText: "S · A",
+      meta: { title: "Vous êtes invités — Parvin & Alli" },
+      names: ["Parvin", "Alli"],
+      sealText: "P · A",
       tapHint: "Touchez pour ouvrir l'invitation",
       topLine: "",
       greeting: "Cher·e {name},",
