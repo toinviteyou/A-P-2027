@@ -169,7 +169,7 @@ window.WEDDING_CONFIG = {
       },
       venue: {
         title: "Venue",
-        name: "Name of the venue",
+        name: "Emart-e Ashraafi",
         address: "Sarkhun, Hormozgan Province\nIran",
         google: "Directions in Google Maps",
         apple: "Apple Maps",
