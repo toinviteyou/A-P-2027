@@ -217,8 +217,8 @@ window.WEDDING_CONFIG = {
       },
       venue: {
         title: "Lieu",
-        name: "Nom du lieu",
-        address: "Sarkhun, province d'Hormozgan\nIran",
+        name: "Emart-e Ashraafi",
+        address: "Sarkhun avenue,Bandar Abbas, province d'Hormozgan\nIran",
         google: "Itinéraire Google Maps",
         apple: "Plans (Apple)",
         waze: "Waze"
@@ -230,16 +230,16 @@ window.WEDDING_CONFIG = {
         whatsapp: "Écrire sur WhatsApp",
         email: "Envoyer un e-mail",
         form: "Remplir le formulaire",
-        whatsappMsg: "Bonjour ! {guest} sera présent·e au mariage de Sara & Arman.",
+        whatsappMsg: "Bonjour ! {guest} sera présent·e au mariage de Parvin & Alli.",
         emailSubject: "Réponse – mariage"
       },
       calendar: {
         add: "Ajouter à l'agenda",
         google: "Google Agenda",
-        eventTitle: "Mariage de Sara & Arman",
+        eventTitle: "Mariage de Parvin & Alli",
         eventDesc: "Nous avons hâte de fêter ça avec vous."
       },
-      footer: "Avec tout notre amour, Sara et Arman",
+      footer: "Avec tout notre amour, Parvin et Alli",
       ui: { music: "Musique", open: "Ouvrir l'invitation" }
     }
   }
